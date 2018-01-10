@@ -3,6 +3,7 @@
 namespace app\models;
 
 use \yii\db\Query;
+use Yii;
 
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -76,6 +77,28 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             ->select(['*'])
             ->from('users')
             ->all();
+    }
+
+    /**
+     * Creates new user
+     */
+    public static function create($email, $username, $password, $args = []) 
+    {
+        $command = Yii::$app->db->createCommand();
+        $args = array_merge(
+            $args, 
+            [
+                'email' => $email,
+                'username' => $username,
+                'password' => $password
+            ]
+        );
+        $res = $command->insert('users', $args)->execute();
+        if ($res) {
+            $user = User::findByEmail($email);
+            Yii::$app->user->login($user, 0);
+        }
+        return $res;
     }
 
     /**

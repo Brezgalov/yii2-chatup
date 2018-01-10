@@ -21,8 +21,18 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                // 'only' => ['logout', 'landing', 'index', 'register'],
+                'only' => ['logout', 'landing', 'index', 'login', 'register'],
                 'rules' => [
+                    [
+                        'actions' => ['logout', 'landing'],
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['index', 'login', 'register'],
+                        'allow' => true,
+                        'roles' => ['?']
+                    ],
                     [
                         'actions' => ['logout', 'landing'],
                         'allow' => true,
@@ -30,24 +40,22 @@ class SiteController extends Controller
                     ],
                     [
                         'actions' => ['index', 'login', 'register'],
-                        'allow' => true,
-                        'roles' => ['?'],
+                        'allow' => false,
+                        'roles' => ['@'],
                         'denyCallback' => function ($rule, $action) {
-                            var_dump($rule, $action);die();//not reaching. After login "login" gives only error
-                            return $action->controller->redirect('landing');
+                            return $action->controller->redirect(['site/landing']);
                         },
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+            // 'verbs' => [
+            //     'class' => VerbFilter::className(),
+            //     'actions' => [
+            //         'logout' => ['post'],
+            //     ],
+            // ],
         ];
     }
-
 
     /**
      * @inheritdoc
@@ -82,10 +90,17 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        //throw new NotFoundHttpException("Something unexpected happened");
         $model = new LoginForm();
-        if (!Yii::$app->user->isGuest || $model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(array('site/landing'));
+
+        if (
+            !Yii::$app->user->isGuest || 
+            $model->load(Yii::$app->request->post()) && 
+            $model->login()
+        ) {
+            return $this->redirect(['site/landing']);
         }
+        
         return $this->render(
             'index', 
             [
@@ -100,11 +115,21 @@ class SiteController extends Controller
      * @return string
      */
     public function actionRegister()
-    {
+    {   
+        $model = new RegisterForm();
+
+        if (
+            Yii::$app->user->isGuest &&
+            $model->load(Yii::$app->request->post()) && 
+            $model->register()
+        ) {
+            return $this->redirect(['site/landing']);
+        }
+
         return $this->render(
             'register',
             [
-                'model' => new RegisterForm(),
+                'model' => $model,
             ]
         );
     }
@@ -117,41 +142,32 @@ class SiteController extends Controller
     }
 
     /**
-     * Logout action.
+     * Logout action
      *
      * @return Response
      */
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->goHome();
+        return $this->redirect('/');
     }
 
     /**
-     * Displays contact page.
-     *
-     * @return Response|string
+     * Displays errors
      */
-    // public function actionContact()
+    // public function actionError()
     // {
-    //     $model = new ContactForm();
-    //     if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-    //         Yii::$app->session->setFlash('contactFormSubmitted');
+    //     $exception = Yii::$app->errorHandler->exception;
+    //     if ($exception !== null) {
+    //         return $this->render('error', ['exception' => $exception]);
+    //     }  
+    // }    
 
-    //         return $this->refresh();
-    //     }
-    //     return $this->render('contact', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    // public function actionAbout()
-    // {
-    //     return $this->render('about');
-    // }
+    public function actionError()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            return $this->render('error', ['exception' => $exception]);
+        }
+    }
 }

@@ -12,6 +12,7 @@ use app\assets\AppAsset;
 use app\models\User;
 
 AppAsset::register($this);
+$currentUser = Yii::$app->user->getIdentity();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -30,26 +31,42 @@ AppAsset::register($this);
 		<div class="container">
 			<div class="row main">
 				<div class="col-md-3 sidebar">
-					<?= 
-        				Html::a(
-        					'<h1>Chat Up</h1>', 
-        					['/'], 
-        					['class' => 'brand']
-    					) 
-    				?>
-    				<?= Html::ul(
-	    					User::all(), 
-	    					[
-	    						'class' => 'chatup-users',
-	    						'item' => function($data, $index) {
-								    return Html::tag(
-								        'li',
-								        $data['username']
-								    );
-								}
-							]
-						) 
-					?>
+					<div class="title">
+						<?= 
+	        				Html::a(
+	        					'<h1>Chat Up</h1>', 
+	        					['/'], 
+	        					['class' => 'brand']
+	    					) 
+	    				?>
+    				</div>
+    				<?php if ($currentUser): ?>
+	    				<div class="current-user">
+	    					<span class="name">Logged in as <?= $currentUser->username ?></span>
+	    					<?= 
+		        				Html::a(
+		        					'Log out', 
+		        					['site/logout'], 
+		        					[]
+		    					) 
+	    					?>
+	    				</div>
+    				<?php endif; ?>
+    				<div class="users-list">
+	    				<?= Html::ul(
+		    					User::all(), 
+		    					[
+		    						'class' => 'chatup-users',
+		    						'item' => function($data, $index) {
+									    return Html::tag(
+									        'li',
+									        $data['username']
+									    );
+									}
+								]
+							) 
+						?>
+					</div>
 				</div>
 				<div class="col-md-9 workspace">
 					<?= $content ?>

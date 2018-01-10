@@ -23,12 +23,14 @@ class m180110_095240_users extends Migration
         $this->createIndex(
             'username-index',
             'users',
-            'username'
+            'username',
+            true
         );
         $this->createIndex(
             'email-index',
             'users',
-            'email'
+            'email',
+            true
         );
 
         $this->batchInsert(
@@ -38,7 +40,7 @@ class m180110_095240_users extends Migration
                 [
                     'admin', 
                     'admin@gmail.com', 
-                    password_hash('admin#admin@gmail.com', PASSWORD_BCRYPT), 
+                    password_hash('admin', PASSWORD_BCRYPT), 
                     password_hash('adminToken', PASSWORD_BCRYPT),
                     password_hash('adminToken', PASSWORD_BCRYPT),
                 ],
