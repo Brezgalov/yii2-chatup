@@ -2,41 +2,33 @@
 
 namespace app\models;
 
+use \yii\db\Query;
+
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
     public $id;
     public $username;
     public $email;
     public $password;
-    public $authKey;
-    public $accessToken;
+    public $auth_key;
+    public $access_token;
 
-    private static $users = [
-        '1' => [
-            'id' => '1',
-            'username' => 'admin',
-            'email' => 'admin@brezgalov.ru',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '2' => [
-            'id' => '2',
-            'username' => 'demo',
-            'email' => 'demo@demo.com',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
+    public static function findBy($key, $value) {
+        return (new Query())
+            ->select(['*'])
+            ->from('users')
+            ->where([$key => $value])
+            ->all();
+    }
 
     /**
      * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        $found = self::findBy('id', $id);
+        $user = array_shift($found);
+        return (!empty($user))? new static($user) : null;
     }
 
     /**
@@ -44,13 +36,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        $found = self::findBy('access_token', $token);
+        $user = array_shift($found);
+        return (!empty($user))? new static($user) : null;
     }
 
     /**
@@ -61,13 +49,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        $found = self::findBy('username', $username);
+        $user = array_shift($found);
+        return (!empty($user))? new static($user) : null;
     }
 
     /**
@@ -78,13 +62,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByEmail($email)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['email'], $email) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        $found = self::findBy('email', $email);
+        $user = array_shift($found);
+        return (!empty($user))? new static($user) : null;
     }
 
     /**
@@ -92,7 +72,10 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function all() 
     {
-        return self::$users;
+        return (new Query())
+            ->select(['*'])
+            ->from('users')
+            ->all();
     }
 
     /**
@@ -127,6 +110,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return password_verify(
+            $password,
+            $this->password
+        );
     }
 }

@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -20,12 +21,21 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                // 'only' => ['logout', 'landing', 'index', 'register'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'landing'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index', 'login', 'register'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                        'denyCallback' => function ($rule, $action) {
+                            var_dump($rule, $action);die();//not reaching. After login "login" gives only error
+                            return $action->controller->redirect('landing');
+                        },
                     ],
                 ],
             ],
@@ -37,6 +47,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -61,10 +72,24 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        return $this->actionLogin();
+    }
+
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
+    public function actionLogin()
+    {
+        $model = new LoginForm();
+        if (!Yii::$app->user->isGuest || $model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect(array('site/landing'));
+        }
         return $this->render(
             'index', 
             [
-                'model' => new LoginForm(),
+                'model' => $model,
             ]
         );
     }
@@ -85,23 +110,10 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action.
-     *
-     * @return Response|string
+     * Display Landing Hub
      */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+    public function actionLanding() {
+        return $this->render('landing');
     }
 
     /**
