@@ -10,7 +10,7 @@ class m180110_095240_users extends Migration
     /**
      * @inheritdoc
      */
-    public function safeUp() {
+    public function up() {
         $this->createTable('users', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull(),
@@ -51,7 +51,7 @@ class m180110_095240_users extends Migration
     /**
      * @inheritdoc
      */
-    public function safeDown() {
+    public function down() {
         $this->dropIndex(
             'username-index',
             'users'
@@ -62,19 +62,4 @@ class m180110_095240_users extends Migration
         );
         $this->dropTable('users');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m180110_095240_users cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
