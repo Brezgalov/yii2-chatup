@@ -86,6 +86,6 @@ class LoginForm extends Model
      */
     public function getFieldTemplate() 
     {
-        return '<div class="row"><div class="col-md-6 col-md-offset-3 col-sm-12"><div class="form-group"><label>{label}</label>{input}<span class="input-error">{error}</span></div></div></div>'; 
+        return '<div class="row"><div class="col-md-6 col-md-offset-3 col-sm-12">{label}{input}<span class="input-error">{error}</span></div></div>'; 
     }
 }

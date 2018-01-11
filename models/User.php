@@ -101,6 +101,24 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return $res;
     }
 
+    public function getAvailableContacts() {
+        $currentUser = Yii::$app->user->getIdentity();
+        if ($currentUser) {
+            $users = (new Query())
+            ->select(['*'])
+            ->from('users')
+            ->where(['not', 'id='.$currentUser->id])
+            ->all();
+            $result = [];
+            foreach ($users as $user) {
+                $result[$user['id']] = $user['username'];
+            }
+            return $result;
+        } else {
+            return [];
+        }
+    }
+
     /**
      * @inheritdoc
      */

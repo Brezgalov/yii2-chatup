@@ -30,7 +30,7 @@ class m180110_205052_user_chats extends Migration
             'fk_user_chats_to_chat',
             'user_chats',
             'chat_id',
-            'users',
+            'chats',
             'id'
         );
     }

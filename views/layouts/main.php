@@ -10,9 +10,12 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\User;
+use app\models\CreateChatForm;
+use yii\bootstrap\ActiveForm;
 
 AppAsset::register($this);
 $currentUser = Yii::$app->user->getIdentity();
+$newChatFrom = new CreateChatForm();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -51,22 +54,52 @@ $currentUser = Yii::$app->user->getIdentity();
 		    					) 
 	    					?>
 	    				</div>
+	    				<div class="new-chat">
+	    					<?php 
+								$form = ActiveForm::begin([
+							        'id' => 'new-chat-form',
+							        'method' => 'POST',
+							        'action' => ['site/chatup'],
+							        'fieldConfig' => [
+							            'template' => $newChatFrom->getFieldTemplate(),
+							        ],
+							    ]); 
+							    $contactsAvailable = $currentUser->getAvailableContacts();
+							    echo $form->field(
+		    						$newChatFrom, 
+		    						'users[]'
+	    						)->checkboxList($contactsAvailable); 
+	    						echo $form->field(
+	    							$newChatFrom,
+	    							'name'
+    							);
+					        	echo Html::submitButton(
+					        		'Chat up with selected users', 
+					        		[
+					        			'class' => 'btn btn-default', 
+					        			'name' => 'chatup-button'
+					    			]	
+								); 	
+								ActiveForm::end(); 
+							 ?>
+	    				</div>
+    				<?php else: ?>
+	    				<div class="users-list">
+		    				<?= Html::ul(
+			    					User::all(), 
+			    					[
+			    						'class' => 'chatup-users',
+			    						'item' => function($data, $index) {
+										    return Html::tag(
+										        'li',
+										        $data['username']
+										    );
+										}
+									]
+								) 
+							?>
+						</div>
     				<?php endif; ?>
-    				<div class="users-list">
-	    				<?= Html::ul(
-		    					User::all(), 
-		    					[
-		    						'class' => 'chatup-users',
-		    						'item' => function($data, $index) {
-									    return Html::tag(
-									        'li',
-									        $data['username']
-									    );
-									}
-								]
-							) 
-						?>
-					</div>
 				</div>
 				<div class="col-md-9 workspace">
 					<?= $content ?>

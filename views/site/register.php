@@ -23,16 +23,21 @@
 	        	<?= $form->field($model, 'password')->passwordInput() ?>
 				<?= $form->field($model, 'password_repeat')->passwordInput() ?>
 	        	<div class="text-center">
-	        			<?= 
-				        	Html::submitButton(
-				        		'SignUp', 
-				        		[
-				        			'class' => 'btn btn-danger', 
-				        			'name' => 'register-button'
-				    			]	
-							) 	
-						?>
-	        	
+        			<?= 
+			            Html::a(
+			                'Back', 
+			                Yii::$app->request->referrer
+			            ); 
+			        ?>
+        			<?= 
+			        	Html::submitButton(
+			        		'SignUp', 
+			        		[
+			        			'class' => 'btn btn-danger', 
+			        			'name' => 'register-button'
+			    			]	
+						) 	
+					?>
 	        	</div>
 	        </div>
 	    <?php ActiveForm::end(); ?>

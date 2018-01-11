@@ -9,7 +9,11 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
+use app\models\CreateChatForm;
 use app\models\User;
+use app\models\UserChats;
+use app\models\Chat;
+use yii\base\UserException;
 
 class SiteController extends Controller
 {
@@ -21,10 +25,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'landing', 'index', 'login', 'register'],
+                'only' => ['logout', 'landing', 'index', 'login', 'register', 'chatup', 'chat'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'landing'],
+                        'actions' => ['logout', 'landing', 'chatup', 'chat'],
                         'allow' => false,
                         'roles' => ['?'],
                     ],
@@ -34,7 +38,7 @@ class SiteController extends Controller
                         'roles' => ['?']
                     ],
                     [
-                        'actions' => ['logout', 'landing'],
+                        'actions' => ['logout', 'landing', 'chatup', 'chat'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -48,12 +52,12 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            // 'verbs' => [
-            //     'class' => VerbFilter::className(),
-            //     'actions' => [
-            //         'logout' => ['post'],
-            //     ],
-            // ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'chatup' => ['post'],
+                ],
+            ],
         ];
     }
 
@@ -92,6 +96,7 @@ class SiteController extends Controller
     {
         //throw new NotFoundHttpException("Something unexpected happened");
         $model = new LoginForm();
+
 
         if (
             !Yii::$app->user->isGuest || 
@@ -149,19 +154,61 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->redirect('/');
+        return $this->redirect(['/']);
     }
 
-    /**
-     * Displays errors
-     */
-    // public function actionError()
-    // {
-    //     $exception = Yii::$app->errorHandler->exception;
-    //     if ($exception !== null) {
-    //         return $this->render('error', ['exception' => $exception]);
-    //     }  
-    // }    
+    public function actionChatup() 
+    {
+        $currentUser = Yii::$app->user->getIdentity();
+        if (!$currentUser) {
+            return $this->redirect(['/']);
+        }
+        $model = new CreateChatForm();
+        if ($model->load(Yii::$app->request->post())) {
+            $chat = new Chat();
+            $chat->name = $model->name;
+            $chat->save();
+
+            $saves = [];
+            foreach ($model->users as $uid) {
+                $userChat = new UserChats();
+                $userChat->user_id = $uid;
+                $userChat->chat_id = $chat->id;
+                $userChat->save();
+            }
+
+            $userChatSelf = new UserChats();
+            $userChatSelf->user_id = $currentUser->id;
+            $userChatSelf->chat_id = $chat->id;
+            $userChatSelf->save();
+            return $this->redirect(['site/chat', 'id' => $chat->id]);
+        } else {
+            return $this->redirect(['/']);
+        }
+    }
+
+    public function actionChat() {
+        $data = Yii::$app->request->get();
+        if (!isset($data['id'])) {
+            return $this->redirect(['/']);
+        }
+        $chat = Chat::findOne($data['id']);
+        if (!$chat || !$chat->hasUser(Yii::$app->user->id)) {
+            return $this->redirect(['/']);
+        }
+        $users = $chat->getUsers();
+        $messages = $chat->getMessages();
+        $model = null;//add message
+        return $this->render(
+            'chat',
+            [
+                'name' => $chat->name,
+                'users' => $users,
+                'messages' => $messages,
+                'model' => $model,
+            ]
+        );
+    }
 
     public function actionError()
     {
