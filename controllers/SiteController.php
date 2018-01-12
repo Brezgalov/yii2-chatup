@@ -38,22 +38,22 @@ class SiteController extends Controller
                 ],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'landing', 'chatup', 'chat', 'new-message'],
+                        'actions' => ['landing', 'chatup', 'chat', 'new-message'],
                         'allow' => false,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'login', 'register'],
+                        'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['?']
                     ],
                     [
-                        'actions' => ['logout', 'landing', 'chatup', 'chat', 'new-message'],
+                        'actions' => ['landing', 'chatup', 'chat', 'new-message'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'login', 'register'],
+                        'actions' => ['index'],
                         'allow' => false,
                         'roles' => ['@'],
                         'denyCallback' => function ($rule, $action) {
@@ -95,59 +95,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->actionLogin();
-    }
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        //throw new NotFoundHttpException("Something unexpected happened");
-        $model = new LoginForm();
-
-
-        if (
-            !Yii::$app->user->isGuest || 
-            $model->load(Yii::$app->request->post()) && 
-            $model->login()
-        ) {
-            return $this->redirect(['site/landing']);
-        }
-        
-        return $this->render(
-            'index', 
-            [
-                'model' => $model,
-            ]
-        );
-    }
-
-    /**
-     * Displays register form.
-     *
-     * @return string
-     */
-    public function actionRegister()
-    {   
-        $model = new RegisterForm();
-
-        if (
-            Yii::$app->user->isGuest &&
-            $model->load(Yii::$app->request->post()) && 
-            $model->register()
-        ) {
-            return $this->redirect(['site/landing']);
-        }
-
-        return $this->render(
-            'register',
-            [
-                'model' => $model,
-            ]
-        );
+        return $this->redirect(['user/login']);
     }
 
     /**
@@ -155,17 +103,6 @@ class SiteController extends Controller
      */
     public function actionLanding() {
         return $this->render('landing');
-    }
-
-    /**
-     * Logout action
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-        return $this->redirect(['/']);
     }
 
     public function actionChatup() 

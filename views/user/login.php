@@ -28,6 +28,15 @@
 	        	<div class="row">
 	        		<div class="col-md-3 col-md-offset-3 col-sm-12">
 	        			<?= 
+	        				Html::a(
+	        					'SignUp', 
+	        					['user/register'], 
+	        					['class' => 'btn btn-danger']
+	    					) 
+	    				?>
+	        		</div>
+	        		<div class="col-md-3 col-sm-12">
+	        			<?= 
 				        	Html::submitButton(
 				        		'LogIn', 
 				        		[
@@ -36,15 +45,6 @@
 				    			]	
 							) 	
 						?>
-	        		</div>
-	        		<div class="col-md-3 col-sm-12">
-	        			<?= 
-	        				Html::a(
-	        					'SignUp', 
-	        					['site/register'], 
-	        					['class' => 'btn btn-danger']
-	    					) 
-	    				?>
 	        		</div>
 	        	</div>
 	        </div>

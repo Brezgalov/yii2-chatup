@@ -3,15 +3,12 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\User;
 use app\models\CreateChatForm;
 use yii\bootstrap\ActiveForm;
+use app\controllers\UserController;
 
 AppAsset::register($this);
 $currentUser = Yii::$app->user->getIdentity();
@@ -50,7 +47,7 @@ $newChatFrom = new CreateChatForm();
 	    						<?= Html::a(
 					                    $currentUser->username, 
 					                    [
-					                        'site/profile', 
+					                        'user/profile', 
 					                        'id' => $currentUser->id
 					                    ]
 					                );
@@ -59,7 +56,7 @@ $newChatFrom = new CreateChatForm();
 	    					<?= 
 		        				Html::a(
 		        					'Log out', 
-		        					['site/logout'], 
+		        					['user/logout'], 
 		        					[]
 		    					) 
 	    					?>
@@ -74,7 +71,9 @@ $newChatFrom = new CreateChatForm();
 							            'template' => $newChatFrom->getFieldTemplate(),
 							        ],
 							    ]); 
-							    $contactsAvailable = $currentUser->getAvailableContacts();
+							    $contactsAvailable = UserController::getAvailableContactsList(
+							    	$currentUser->id
+						    	);
 							    echo $form->field(
 		    						$newChatFrom, 
 		    						'users[]'

@@ -103,29 +103,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return $res;
     }
 
-    public function getAvailableContacts() {
-        if ($this->id) {
-            $users = (new Query())
-            ->select(['*'])
-            ->from('users')
-            ->where(['not', 'id='.$this->id])
-            ->all();
-            $result = [];
-            foreach ($users as $user) {
-                $result[$user['id']] = Html::a(
-                    $user['username'], 
-                    [
-                        'site/profile', 
-                        'id' => $user['id']
-                    ]
-                );
-            }
-            return $result;
-        } else {
-            return [];
-        }
-    }
-
     public function getChats() {
         return UserChats::find()
             ->with('chat')

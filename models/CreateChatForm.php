@@ -2,6 +2,7 @@
 
 use Yii;
 use yii\base\Model;
+use app\models\Client;
 
 /**
  * LoginForm is the model behind the login form.
@@ -43,13 +44,13 @@ class CreateChatForm extends Model
         foreach ($this->users as $uid) {
             $userChat = new UserChats();
             $userChat->user_id = $uid;
-            $userChat->chat_id = $chatId;
+            $userChat->chat_id = $chat->id;
             $userChat->save();
         }
 
         $userChatSelf = new UserChats();
         $userChatSelf->user_id = Yii::$app->user->id;;
-        $userChatSelf->chat_id = $chatId;
+        $userChatSelf->chat_id = $chat->id;
         $userChatSelf->save();
 
         return $chat->id;

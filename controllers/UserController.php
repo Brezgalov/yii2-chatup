@@ -9,12 +9,10 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
-use app\models\CreateChatForm;
-use app\models\SendMessageForm;
 use app\models\User;
-use app\models\UserChats;
-use app\models\Chat;
+use app\models\Client;
 use yii\base\UserException;
+use yii\helpers\Html;
 
 class UserController extends Controller
 {
@@ -90,10 +88,7 @@ class UserController extends Controller
      */
     public function actionLogin()
     {
-        //throw new NotFoundHttpException("Something unexpected happened");
         $model = new LoginForm();
-
-
         if (
             !Yii::$app->user->isGuest || 
             $model->load(Yii::$app->request->post()) && 
@@ -103,7 +98,7 @@ class UserController extends Controller
         }
         
         return $this->render(
-            'index', 
+            'login', 
             [
                 'model' => $model,
             ]
@@ -146,11 +141,24 @@ class UserController extends Controller
         return $this->redirect(['/']);
     }
 
-    public function actionError()
-    {
-        $exception = Yii::$app->errorHandler->exception;
-        if ($exception !== null) {
-            return $this->render('error', ['exception' => $exception]);
+    public static function getAvailableContactsList($id) {
+        if ($id) {
+            $users = Client::find()
+                ->where(['not', 'id='.$id])
+                ->all();
+            $result = [];
+            foreach ($users as $user) {
+                $result[$user->id] = Html::a(
+                    $user->username, 
+                    [
+                        'site/profile', 
+                        'id' => $user->id
+                    ]
+                );
+            }
+            return $result;
+        } else {
+            return [];
         }
     }
 }
