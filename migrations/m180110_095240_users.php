@@ -16,6 +16,8 @@ class m180110_095240_users extends Migration
             'username' => $this->string()->notNull(),
             'email' => $this->string()->notNull(),
             'password' => $this->string()->notNull(),
+            'state' => $this->string()->defautl('ofline'),
+            'status' => $this->string(),
             'auth_key' => $this->string(),
             'access_token' => $this->string(),
         ]);

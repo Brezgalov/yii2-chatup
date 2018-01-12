@@ -16,7 +16,7 @@ use app\models\UserChats;
 use app\models\Chat;
 use yii\base\UserException;
 
-class SiteController extends Controller
+class UserController extends Controller
 {
     /**
      * @inheritdoc
@@ -28,32 +28,27 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'only' => [
                     'logout', 
-                    'landing', 
-                    'index', 
                     'login', 
                     'register', 
-                    'chatup', 
-                    'chat',
-                    'new-message'
                 ],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'landing', 'chatup', 'chat', 'new-message'],
+                        'actions' => ['logout'],
                         'allow' => false,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'login', 'register'],
+                        'actions' => ['login', 'register'],
                         'allow' => true,
                         'roles' => ['?']
                     ],
                     [
-                        'actions' => ['logout', 'landing', 'chatup', 'chat', 'new-message'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'login', 'register'],
+                        'actions' => ['login', 'register'],
                         'allow' => false,
                         'roles' => ['@'],
                         'denyCallback' => function ($rule, $action) {
@@ -62,13 +57,13 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'chatup' => ['post'],
-                    'new-message' => ['post'],
-                ],
-            ],
+            // 'verbs' => [
+            //     'class' => VerbFilter::className(),
+            //     'actions' => [
+            //         'chatup' => ['post'],
+            //         'new-message' => ['post'],
+            //     ],
+            // ],
         ];
     }
 
@@ -86,16 +81,6 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
-    }
-
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->actionLogin();
     }
 
     /**
@@ -151,13 +136,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Display Landing Hub
-     */
-    public function actionLanding() {
-        return $this->render('landing');
-    }
-
-    /**
      * Logout action
      *
      * @return Response
@@ -166,59 +144,6 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
         return $this->redirect(['/']);
-    }
-
-    public function actionChatup() 
-    {
-        $currentUser = Yii::$app->user->getIdentity();
-        if (!$currentUser) {
-            return $this->redirect(['/']);
-        }
-        $chat = new CreateChatForm();
-        if ($chat->load(Yii::$app->request->post())) {
-            $chatId = $chat->create();         
-            return $this->redirect(['site/chat', 'id' => $chatId]);
-        } else {
-            return $this->redirect(['/']);
-        }
-    }
-
-    public function actionChat() {
-        $data = Yii::$app->request->get();
-        if (!isset($data['id'])) {
-            return $this->redirect(['/']);
-        }
-
-        $chat = Chat::findOne($data['id']);
-        $userId = Yii::$app->user->id;
-        if (!$chat || !$chat->hasUser($userId)) {
-            return $this->redirect(['/']);
-        }
-
-        $model = new SendMessageForm();
-        $model->user_id = $userId;
-        $model->chat_id = $chat->id;
-        $users = $chat->getUsers();
-        $messages = $chat->getMessages();
-        
-        return $this->render(
-            'chat',
-            [
-                'name' => $chat->name,
-                'users' => $users,
-                'messages' => $messages,
-                'model' => $model,
-            ]
-        );
-    }
-
-    public function actionNewMessage()
-    {
-        $model = new SendMessageForm();
-        if ($model->load(Yii::$app->request->post())) {
-            $model->send();
-        }        
-        return $this->redirect(['site/chat', 'id' => $model->chat_id]);
     }
 
     public function actionError()

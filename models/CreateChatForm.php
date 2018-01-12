@@ -33,4 +33,25 @@ class CreateChatForm extends Model
     {
         return '{label}{input}<span class="input-error">{error}</span>'; 
     }
+
+    public function create() 
+    {
+        $chat = new Chat();
+        $chat->name = $this->name;
+        $chat->save();
+
+        foreach ($this->users as $uid) {
+            $userChat = new UserChats();
+            $userChat->user_id = $uid;
+            $userChat->chat_id = $chatId;
+            $userChat->save();
+        }
+
+        $userChatSelf = new UserChats();
+        $userChatSelf->user_id = Yii::$app->user->id;;
+        $userChatSelf->chat_id = $chatId;
+        $userChatSelf->save();
+
+        return $chat->id;
+    }
 }

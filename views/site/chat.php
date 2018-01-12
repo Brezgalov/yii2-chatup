@@ -4,25 +4,58 @@
 ?>
 <div class="landing-wrapper">
 	<div class="chat">
-		<h2><?= $name ?></h2>
-		<div class="users">
-			<h3>Users:</h3>
+		<div class="chat-header">
+			<h2><?= $name ?></h2>
+			<div class="users">
+				<h3>Users:</h3>
+				<?= Html::ul(
+						$users, 
+						[
+							'class' => 'chat-users',
+							'item' => function($user, $index) {
+							    return Html::tag(
+							        'li',
+							        $user->username
+							    );
+							}
+						]
+					) 
+				?>
+			</div>
+		</div>
+		<div class="messages">
+			<h3>Messages:</h3>
 			<?= Html::ul(
-					$users, 
+					$messages, 
 					[
 						'class' => 'chat-users',
-						'item' => function($user, $index) {
+						'item' => function($message, $index) {
 						    return Html::tag(
 						        'li',
-						        $user->username
+						        $this->render('message', ['message' => $message])
 						    );
 						}
 					]
 				) 
 			?>
 		</div>
-		<div class="messages">
-						
+		<div class="new-message">
+			<?php
+				$form = ActiveForm::begin([
+					'id' => 'new-message-form',
+					'method' => 'POST',
+			        'action' => ['site/new-message'],
+				]);
+				echo $form->field($model, 'chat_id')
+					->hiddenInput()
+					->label(false);;
+				echo $form->field($model, 'user_id')
+					->hiddenInput()
+					->label(false);;
+				echo $form->field($model, 'text')->textarea();
+				echo HTML::submitButton('Send', ['class' => 'send-message-button']);
+				ActiveForm::end();
+			?>
 		</div>
 	</div>
 </div>

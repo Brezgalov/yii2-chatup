@@ -45,7 +45,17 @@ $newChatFrom = new CreateChatForm();
     				</div>
     				<?php if ($currentUser): ?>
 	    				<div class="current-user">
-	    					<span class="name">Logged in as <?= $currentUser->username ?></span>
+	    					<span class="name">
+	    						Logged in as 
+	    						<?= Html::a(
+					                    $currentUser->username, 
+					                    [
+					                        'site/profile', 
+					                        'id' => $currentUser->id
+					                    ]
+					                );
+				                ?>
+	    					</span>
 	    					<?= 
 		        				Html::a(
 		        					'Log out', 
@@ -82,6 +92,29 @@ $newChatFrom = new CreateChatForm();
 								); 	
 								ActiveForm::end(); 
 							 ?>
+	    				</div>
+	    				<div class="chats-list">
+	    					<h2>Chats</h2>
+	    					<?= Html::ul(
+			    					$currentUser->getChats(), 
+			    					[
+			    						'class' => 'chats-list',
+			    						'item' => function($userChat, $index) {
+										    return Html::tag(
+										        'li',
+										        Html::a(
+						        					$userChat->chat->name, 
+						        					[
+						        						'site/chat', 
+						        						'id' => $userChat->chat->id
+					        						], 
+						        					['class' => 'brand']
+						    					) 
+										    );
+										}
+									]
+								) 
+							?>
 	    				</div>
     				<?php else: ?>
 	    				<div class="users-list">

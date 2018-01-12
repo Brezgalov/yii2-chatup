@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+use app\models\UserChats;
 use \yii\db\Query;
 use Yii;
+use yii\helpers\Html;
 
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -102,21 +104,34 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     }
 
     public function getAvailableContacts() {
-        $currentUser = Yii::$app->user->getIdentity();
-        if ($currentUser) {
+        if ($this->id) {
             $users = (new Query())
             ->select(['*'])
             ->from('users')
-            ->where(['not', 'id='.$currentUser->id])
+            ->where(['not', 'id='.$this->id])
             ->all();
             $result = [];
             foreach ($users as $user) {
-                $result[$user['id']] = $user['username'];
+                $result[$user['id']] = Html::a(
+                    $user['username'], 
+                    [
+                        'site/profile', 
+                        'id' => $user['id']
+                    ]
+                );
             }
             return $result;
         } else {
             return [];
         }
+    }
+
+    public function getChats() {
+        return UserChats::find()
+            ->with('chat')
+            ->where([
+                'user_id' => $this->id
+            ])->all();
     }
 
     /**
