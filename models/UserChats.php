@@ -66,11 +66,12 @@ class UserChats extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function countUnread() 
+    public function countUnread($userId) 
     {
         return Messages::find()
             ->where(['chat_id' => $this->chat_id])
-            ->where(['>', 'date', $this->last_read])
+            ->andFilterWhere(['user_id' => $userId])
+            ->andFilterWhere(['>', 'date', $this->last_read])
             ->count();
     }
 }

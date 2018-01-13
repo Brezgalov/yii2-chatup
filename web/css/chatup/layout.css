@@ -1,0 +1,169 @@
+body {
+	background-color: #ccc;
+}
+body > .container {
+	background-color: white;
+}
+.badge {
+	margin-left: 4px;
+	margin-right: 4px;
+}
+.badge.messages {
+	background-color: red;
+	height: 2vh;
+    font-size: 1.5vh;
+    border-radius: 1vh;
+    min-width: 2vh;
+    padding: 0.25vh;
+    vertical-align: middle;
+    display: inline-block;
+}
+span.user-state {
+	width: 10px;
+	height: 10px;
+	vertical-align: middle;
+	display: inline-block;
+	border-radius: 5px;
+	background-color: #ccc;
+	margin: -2px 4px 0;
+}
+span.user-state.user-offline {
+	background-color: red;
+}
+.main .sidebar {
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+	height: 100vh;
+	max-height: 100vh;
+	background-color: rgb(72, 27, 127);
+}
+.main .sidebar .form-group {
+	margin: 0;
+}
+.main .sidebar input.sidebar-text-input {
+	height: 3vh;
+    font-size: 2vh;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    vertical-align: top;
+    border: 1px solid #ccc !important;
+}
+.main .sidebar input.sidebar-text-input.with-submit {
+	border-radius: 4px 0 0 4px;
+    border-right: none !important;
+}
+.main .sidebar .sidebar-submit-button {
+	width: 10%;
+	height: 3vh;
+	display: inline-block;
+	border-width: 1px;
+	vertical-align: top;
+	border: 1px solid #ccc;
+	border-left: none !important;
+	border-radius: 0 4px 4px 0;
+	background-color: white;
+	color: black;
+}
+.main .sidebar .sidebar-input-area {
+	background-color: white;
+    padding: 0 1vh;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.main .sidebar .sidebar-input-area .line,
+.main .sidebar .sidebar-input-area .checkbox {
+	margin: 0;
+	height: 3vh;
+	line-height: 2vh;
+	padding: 0.5vh 0;
+}
+.main .sidebar .title,
+.main .sidebar .current-user,
+.main .sidebar .new-chat,
+.main .sidebar .chats-list {
+	margin-left: -15px;
+	margin-right: -15px;
+	padding: 1vh 15px;
+	border-bottom: 1px solid white;
+}
+.main .sidebar .title {
+	text-align: center;
+}
+.main .sidebar .title .brand {
+	color:white;
+}
+.main .sidebar .title .brand h1 {
+	font-size: 3vh;
+	line-height: 3vh;
+	margin: 0;
+	color: white;
+}
+.main .sidebar .current-user .links {
+	line-height: 2vh;
+	padding-bottom: 1vh;
+	overflow: hidden;
+}
+.main .sidebar .current-user .links a {
+	color: white;
+	font-size: 2vh;
+}
+.main .sidebar .current-user .links > a {
+	float: right;
+}
+.main .sidebar .current-user .status .field-setstatusform-status,
+.main .sidebar .new-chat #new-chat-form .field-createchatform-name {
+	width: 90%;
+	height: 3vh;
+	display: inline-block;
+}
+.main .sidebar .new-chat h2,
+.main .sidebar .chats-list h2 {
+	font-size: 2vh;
+	line-height: 2vh;
+	margin: 0;
+	color: white;
+	padding-bottom: 1vh;
+}
+.main .sidebar .new-chat #new-chat-form #createchatform-users {
+    height: 25vh;
+    max-height: 28vh;
+    border-bottom: none !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.main .sidebar .new-chat #new-chat-form #createchatform-users .checkbox a {
+	color: black;
+	font-size: 2vh;
+}
+.main .sidebar .new-chat #new-chat-form .field-createchatform-name input {
+	border-top: none !important;
+	border-top-left-radius: 0;
+	box-shadow: none !important;
+}
+.main .sidebar .new-chat #new-chat-form .sidebar-submit-button {
+	border-top: none !important;
+	border-top-right-radius: 0;
+}
+.main .sidebar .chats-list {
+    height: 48vh;
+}
+.main .sidebar .chats-list ul {
+	margin: 0;
+	list-style: none;
+    width: 100%;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    height: 41vh;
+}
+.main .sidebar .chats-list ul a {
+	font-size: 2vh;
+	color: black;
+}
+.main .sidebar .developer {
+	text-align: center;
+	font-size: 2vh;
+	padding-top: 1.5vh;
+	color: white;
+}

@@ -24,7 +24,7 @@ class CreateChatForm extends Model
         return [
             // users and name are both required
             [['users', 'name'], 'required'],
-            ['name', 'string'],
+            ['name', 'string', 'min' => 4, 'max' => 14],
         ];
     }
 

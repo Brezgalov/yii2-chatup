@@ -19,6 +19,7 @@ class RegisterForm extends Model {
                 'required'
             ],
 			['password', 'string', 'min' => 6],
+            ['username', 'string', 'min' => 4, 'max' => 14],
             [
                 'password_repeat', 
                 'compare', 

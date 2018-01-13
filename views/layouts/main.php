@@ -47,7 +47,7 @@ $statusForm = new SetStatusForm();
 	    					<div class="links">
 		    					<span class="name"> 
 		    						<?= Html::a(
-						                    $currentUser->username, 
+						                    '@'.$currentUser->username, 
 						                    [
 						                        'user/profile', 
 						                        'id' => $currentUser->id
@@ -84,12 +84,17 @@ $statusForm = new SetStatusForm();
 										[
 											'placeholder' => 'Which one are you today?',
 											'value' => $currentUser->status,
+											'class'=> [
+												'with-submit',
+												'sidebar-text-input', 
+												'form-control'
+											],
 										]
-									);
+									)->label(false)->error(false);
 									echo HTML::submitButton(
 										'>',
 										[
-											'class' => 'set-status-button',
+											'class' => ['sidebar-submit-button'],
 										]
 									);
     								ActiveForm::end();
@@ -97,6 +102,7 @@ $statusForm = new SetStatusForm();
 	    					</div>
 	    				</div>
 	    				<div class="new-chat">
+	    					<h2>New Chat</h2>
 	    					<?php 
 								$form = ActiveForm::begin([
 							        'id' => 'new-chat-form',
@@ -112,23 +118,31 @@ $statusForm = new SetStatusForm();
 							    echo $form->field(
 		    						$newChatFrom, 
 		    						'users[]'
-	    						)->checkboxList($contactsAvailable)
-	    						->label(false)
-	    						->error(false); 
+	    						)->checkboxList(
+	    							$contactsAvailable,
+	    							[
+	    								'class' => ['sidebar-input-area'],
+	    							]
+    							)->label(false)->error(false); 
 	    						echo $form->field(
 	    							$newChatFrom,
 	    							'name'
     							)->input(
     								'text',
     								[
-    									'placeholder' => 'chat name here'
+    									'placeholder' => 'Chat name here',
+    									'class'=> [
+    										'with-submit',
+											'sidebar-text-input', 
+											'form-control'
+										],
     								]
     							)->label(false)->error(false);
 					        	echo Html::submitButton(
-					        		'Chat up with selected users', 
+					        		'>', 
 					        		[
-					        			'class' => 'btn btn-default', 
-					        			'name' => 'chatup-button'
+					        			'class' => ['sidebar-submit-button'], 
+					        			'name' => 'chatup-button',
 					    			]	
 								); 	
 								ActiveForm::end(); 
@@ -139,16 +153,15 @@ $statusForm = new SetStatusForm();
 	    					<?= Html::ul(
 			    					$currentUser->getChats(), 
 			    					[
-			    						'class' => 'chats-list',
-			    						'item' => function($userChat, $index) {
+			    						'item' => function($userChat, $index) use ($currentUser) {
 			    							$text = $userChat->chat->name;
-			    							$unread = $userChat->countUnread();
+			    							$unread = $userChat->countUnread($currentUser->id);
 			    							if ($unread) {
 			    								$text .= Html::tag(
 				    								'span', 
 				    								$unread,
 				    								[
-				    									'class' => 'badge'
+				    									'class' => ['badge', 'messages']
 				    								]
 			    								);
 			    							}
@@ -160,11 +173,12 @@ $statusForm = new SetStatusForm();
 						        					[
 						        						'site/chat', 
 						        						'id' => $userChat->chat->id
-					        						], 
-						        					['class' => 'brand']
-						    					)
+					        						]
+						    					),
+						    					['class' => ['line']]
 										    );
-										}
+										},
+										'class' => ['sidebar-input-area']
 									]
 								) 
 							?>
@@ -196,6 +210,9 @@ $statusForm = new SetStatusForm();
 							?>
 						</div>
     				<?php endif; ?>
+    				<div class="developer">
+    					&copy; Oleg Brezgalov
+    				</div>
 				</div>
 				<div class="col-md-9 workspace">
 					<?= $content ?>

@@ -67,6 +67,7 @@ class LoginForm extends Model
 
         if ($this->validate()) {
             $user = $this->getUser();
+            //fix for db session
             Session::deleteAll(['user_id' => $user->id]);
             return Yii::$app->user->login(
                 $user, 

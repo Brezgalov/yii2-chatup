@@ -131,13 +131,13 @@ class SiteController extends Controller
 
         $messages = Messages::find()
             ->where(['chat_id' => $chat->id])
-            ->where(['<=', 'date', $userChat->last_read])
+            ->andFilterWhere(['<=', 'date', $userChat->last_read])
             ->orderBy(['date' => SORT_ASC])
             ->all();
 
         $unread = Messages::find()
             ->where(['chat_id' => $chat->id])
-            ->where(['>', 'date', $userChat->last_read])
+            ->andFilterWhere(['>', 'date', $userChat->last_read])
             ->orderBy(['date' => SORT_ASC])
             ->all();
 
