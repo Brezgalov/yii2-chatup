@@ -61,6 +61,7 @@ $config = [
                    'last_write' => time(),
                 ];               
             },
+            'timeout' => 60*60*3,
         ],
     ],
     'params' => $params,

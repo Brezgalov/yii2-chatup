@@ -12,6 +12,7 @@ use app\models\forms\SendMessageForm;
 use app\models\User;
 use app\models\UserChats;
 use app\models\Chat;
+use app\models\Messages;
 use yii\base\UserException;
 
 class SiteController extends Controller
@@ -122,7 +123,26 @@ class SiteController extends Controller
         $model->user_id = $userId;
         $model->chat_id = $chat->id;
         $users = $chat->getUsers();
-        $messages = $chat->getMessages();
+
+        $userChat = UserChats::findOne([
+            'user_id' => $userId,
+            'chat_id' => $chat->id
+        ]);
+
+        $messages = Messages::find()
+            ->where(['chat_id' => $chat->id])
+            ->where(['<=', 'date', $userChat->last_read])
+            ->orderBy(['date' => SORT_ASC])
+            ->all();
+
+        $unread = Messages::find()
+            ->where(['chat_id' => $chat->id])
+            ->where(['>', 'date', $userChat->last_read])
+            ->orderBy(['date' => SORT_ASC])
+            ->all();
+
+        $userChat->last_read = time();
+        $userChat->save();
         
         return $this->render(
             'chat',
@@ -130,6 +150,7 @@ class SiteController extends Controller
                 'name' => $chat->name,
                 'users' => $users,
                 'messages' => $messages,
+                'unread' => $unread,
                 'model' => $model,
             ]
         );

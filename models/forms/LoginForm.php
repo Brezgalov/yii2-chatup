@@ -5,6 +5,7 @@ namespace app\models\forms;
 use Yii;
 use yii\base\Model;
 use app\models\User;
+use app\models\Session;
 
 /**
  * LoginForm is the model behind the login form.
@@ -62,8 +63,15 @@ class LoginForm extends Model
      */
     public function login()
     {
+        $user = $this->getUser();
+
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 5);
+            $user = $this->getUser();
+            Session::deleteAll(['user_id' => $user->id]);
+            return Yii::$app->user->login(
+                $user, 
+                $this->rememberMe ? 3600*24*30 : 5
+            );
         }
         return false;
     }

@@ -31,10 +31,9 @@ class Messages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'chat_id', 'text'], 'required'],
-            [['user_id', 'chat_id'], 'integer'],
+            [['user_id', 'chat_id', 'text', 'date'], 'required'],
+            [['user_id', 'chat_id', 'date'], 'integer'],
             [['text'], 'string'],
-            [['date'], 'safe'],
             [['chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => Chat::className(), 'targetAttribute' => ['chat_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -50,6 +49,7 @@ class Messages extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'chat_id' => 'Chat ID',
             'text' => 'Text',
+            'date' => 'Date',
         ];
     }
 

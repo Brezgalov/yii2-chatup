@@ -2,6 +2,7 @@
 
 use Yii;
 use yii\base\Model;
+use app\models\Messages;
 
 /**
  * LoginForm is the model behind the login form.
@@ -29,7 +30,7 @@ class SendMessageForm extends Model
 
     public function send()
     {
-        $date = date('Y-m-d H:i:s');
+        $date = time();
         $message = new Messages();
         $message->date = $date;
         $message->user_id = $this->user_id;

@@ -17,7 +17,7 @@ class m180110_205106_user_messages extends Migration
             'user_id' => $this->integer()->notNull(),
             'chat_id' => $this->integer()->notNull(),
             'text' => $this->text()->notNull(),
-            'date' => $this->timestamp()->notNull(),
+            'date' => $this->integer()->notNull(),
         ]);
 
         $this->addForeignKey(

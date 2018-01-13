@@ -14,9 +14,17 @@ class RegisterForm extends Model {
 	public function rules()
     {
         return [
-            [['email', 'username', 'password', 'password_repeat'], 'required'],
+            [
+                ['email', 'username', 'password', 'password_repeat'], 
+                'required'
+            ],
 			['password', 'string', 'min' => 6],
-            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match"],
+            [
+                'password_repeat', 
+                'compare', 
+                'compareAttribute'=>'password', 
+                'message'=>"Passwords don't match"
+            ],
             ['email', 'email'],
         ];
     }

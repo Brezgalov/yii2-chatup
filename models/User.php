@@ -172,11 +172,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->id;
     }
 
-    public function getState() {
-        $session = (new \yii\db\Query())
-            ->select(['*'])
-            ->from('session')
+    public function getState() 
+    {
+        $session = Session::find()
             ->where(['user_id' => $this->id])
+            ->orderBy(['id' => SORT_DESC])
             ->one();
         if (
             !empty($session) && 

@@ -4,7 +4,7 @@
 			<?= $message->author->username ?>
 		</div>
 		<div class="time">
-			at <?= strtotime($message->date) ?>
+			at <?= $message->date ?>
 		</div>
 	<div>
 	<div class="text">

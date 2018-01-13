@@ -112,11 +112,18 @@ $statusForm = new SetStatusForm();
 							    echo $form->field(
 		    						$newChatFrom, 
 		    						'users[]'
-	    						)->checkboxList($contactsAvailable); 
+	    						)->checkboxList($contactsAvailable)
+	    						->label(false)
+	    						->error(false); 
 	    						echo $form->field(
 	    							$newChatFrom,
 	    							'name'
-    							);
+    							)->input(
+    								'text',
+    								[
+    									'placeholder' => 'chat name here'
+    								]
+    							)->label(false)->error(false);
 					        	echo Html::submitButton(
 					        		'Chat up with selected users', 
 					        		[
@@ -134,10 +141,22 @@ $statusForm = new SetStatusForm();
 			    					[
 			    						'class' => 'chats-list',
 			    						'item' => function($userChat, $index) {
+			    							$text = $userChat->chat->name;
+			    							$unread = $userChat->countUnread();
+			    							if ($unread) {
+			    								$text .= Html::tag(
+				    								'span', 
+				    								$unread,
+				    								[
+				    									'class' => 'badge'
+				    								]
+			    								);
+			    							}
+			    							
 										    return Html::tag(
 										        'li',
 										        Html::a(
-						        					$userChat->chat->name, 
+						        					$text, 
 						        					[
 						        						'site/chat', 
 						        						'id' => $userChat->chat->id

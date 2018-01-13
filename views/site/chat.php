@@ -38,6 +38,26 @@
 					]
 				) 
 			?>
+			<?php if (!empty($unread)): ?>
+				<div class="unread">
+					<div class="text-center">
+						<h4>Unread Messages:</h4>
+					</div>
+					<?= Html::ul(
+							$unread, 
+							[
+								'class' => 'chat-users',
+								'item' => function($message, $index) {
+								    return Html::tag(
+								        'li',
+								        $this->render('message', ['message' => $message])
+								    );
+								}
+							]
+						) 
+					?>
+				</div>
+			<?php endif; ?>
 		</div>
 		<div class="new-message">
 			<?php
