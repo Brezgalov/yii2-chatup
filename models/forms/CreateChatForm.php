@@ -1,8 +1,9 @@
-<?php namespace app\models;
+<?php namespace app\models\forms;
 
 use Yii;
 use yii\base\Model;
-use app\models\Client;
+use app\models\UserChats;
+use app\models\Chat;
 
 /**
  * LoginForm is the model behind the login form.

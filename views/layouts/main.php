@@ -6,13 +6,15 @@
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use app\models\User;
-use app\models\CreateChatForm;
+use app\models\forms\CreateChatForm;
+use app\models\forms\SetStatusForm;
 use yii\bootstrap\ActiveForm;
 use app\controllers\UserController;
 
 AppAsset::register($this);
 $currentUser = Yii::$app->user->getIdentity();
 $newChatFrom = new CreateChatForm();
+$statusForm = new SetStatusForm();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -42,24 +44,57 @@ $newChatFrom = new CreateChatForm();
     				</div>
     				<?php if ($currentUser): ?>
 	    				<div class="current-user">
-	    					<span class="name">
-	    						Logged in as 
-	    						<?= Html::a(
-					                    $currentUser->username, 
-					                    [
-					                        'user/profile', 
-					                        'id' => $currentUser->id
-					                    ]
-					                );
-				                ?>
-	    					</span>
-	    					<?= 
-		        				Html::a(
-		        					'Log out', 
-		        					['user/logout'], 
-		        					[]
-		    					) 
-	    					?>
+	    					<div class="links">
+		    					<span class="name"> 
+		    						<?= Html::a(
+						                    $currentUser->username, 
+						                    [
+						                        'user/profile', 
+						                        'id' => $currentUser->id
+						                    ]
+						                );
+					                ?>
+		    					</span>
+		    					<?= 
+			        				Html::a(
+			        					'Log out', 
+			        					['user/logout'], 
+			        					[]
+			    					) 
+		    					?>
+	    					</div>
+	    					<div class="status">
+	    						<?php 
+	    							$form = ActiveForm::begin([
+	    								'id' => 'status-form',
+	    								'method' => 'POST',
+	    								'action' => ['user/status'],
+    								]);
+    								echo $form->field(
+    									$statusForm,
+    									'user_id'
+									)->hiddenInput([
+										'value' => $currentUser->id,
+									])->label(false)->error(false);
+									echo $form->field(
+										$statusForm,
+										'status'
+									)->input(
+										'text',
+										[
+											'placeholder' => 'Which one are you today?',
+											'value' => $currentUser->status,
+										]
+									);
+									echo HTML::submitButton(
+										'>',
+										[
+											'class' => 'set-status-button',
+										]
+									);
+    								ActiveForm::end();
+								?>
+	    					</div>
 	    				</div>
 	    				<div class="new-chat">
 	    					<?php 

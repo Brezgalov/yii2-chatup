@@ -48,10 +48,10 @@
 				]);
 				echo $form->field($model, 'chat_id')
 					->hiddenInput()
-					->label(false);;
+					->label(false);
 				echo $form->field($model, 'user_id')
 					->hiddenInput()
-					->label(false);;
+					->label(false);
 				echo $form->field($model, 'text')->textarea();
 				echo HTML::submitButton('Send', ['class' => 'send-message-button']);
 				ActiveForm::end();

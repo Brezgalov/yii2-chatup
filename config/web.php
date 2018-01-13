@@ -55,9 +55,8 @@ $config = [
         'session' => [
             'class' => 'yii\web\DbSession',
             'writeCallback' => function ($session) {
-                $id = Yii::$app->user->id;
                 return [
-                   'user_id' => ($id)?: 0,
+                   'user_id' => (Yii::$app->user->id)?: 0,
                    'addr' => $_SERVER['REMOTE_ADDR'],
                    'last_write' => time(),
                 ];               

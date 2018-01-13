@@ -7,10 +7,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\RegisterForm;
-use app\models\CreateChatForm;
-use app\models\SendMessageForm;
+use app\models\forms\CreateChatForm;
+use app\models\forms\SendMessageForm;
 use app\models\User;
 use app\models\UserChats;
 use app\models\Chat;
@@ -46,14 +44,6 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                    // [
-                    //     'actions' => ['index'],
-                    //     'allow' => false,
-                    //     'roles' => ['@'],
-                    //     'denyCallback' => function ($rule, $action) {
-                    //         return $action->controller->redirect(['site/landing']);
-                    //     },
-                    // ],
                     [
                         'actions' => ['login'],
                         'allow' => false,
