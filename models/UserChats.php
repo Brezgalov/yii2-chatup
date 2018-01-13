@@ -32,6 +32,7 @@ class UserChats extends \yii\db\ActiveRecord
         return [
             [['user_id', 'chat_id'], 'required'],
             [['user_id', 'chat_id'], 'integer'],
+            [['last_read'], 'safe'],
             [['chat_id'], 'exist', 'skipOnError' => true, 'targetClass' => Chat::className(), 'targetAttribute' => ['chat_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];

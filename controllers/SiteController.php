@@ -27,14 +27,13 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => [
-                    'logout', 
-                    'landing', 
-                    'index', 
+                    'login', 
+                    'landing',
                     'login', 
                     'register', 
                     'chatup', 
                     'chat',
-                    'new-message'
+                    'new-message',
                 ],
                 'rules' => [
                     [
@@ -43,21 +42,24 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => ['?']
-                    ],
-                    [
                         'actions' => ['landing', 'chatup', 'chat', 'new-message'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    // [
+                    //     'actions' => ['index'],
+                    //     'allow' => false,
+                    //     'roles' => ['@'],
+                    //     'denyCallback' => function ($rule, $action) {
+                    //         return $action->controller->redirect(['site/landing']);
+                    //     },
+                    // ],
                     [
-                        'actions' => ['index'],
+                        'actions' => ['login'],
                         'allow' => false,
-                        'roles' => ['@'],
+                        'roles' => ['?', '@'],
                         'denyCallback' => function ($rule, $action) {
-                            return $action->controller->redirect(['site/landing']);
+                            return $action->controller->redirect(['user/login']);
                         },
                     ],
                 ],
@@ -88,13 +90,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
+    public function actionLogin() {
         return $this->redirect(['user/login']);
     }
 

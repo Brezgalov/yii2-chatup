@@ -16,6 +16,7 @@ class m180110_205052_user_chats extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'chat_id' => $this->integer()->notNull(),
+            'last_read' => $this->timestamp(),
         ]);
 
         $this->addForeignKey(

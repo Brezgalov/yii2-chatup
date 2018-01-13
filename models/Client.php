@@ -36,7 +36,19 @@ class Client extends \yii\db\ActiveRecord
     {
         return [
             [['username', 'email', 'password'], 'required'],
-            [['username', 'email', 'password', 'auth_key', 'access_token'], 'string', 'max' => 255],
+            [
+                [
+                    'username', 
+                    'email', 
+                    'password', 
+                    'auth_key', 
+                    'access_token',
+                    'state',
+                    'status',
+                ], 
+                'string', 
+                'max' => 255
+            ],
             [['username'], 'unique'],
             [['email'], 'unique'],
         ];

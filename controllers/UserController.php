@@ -154,6 +154,12 @@ class UserController extends Controller
                         'site/profile', 
                         'id' => $user->id
                     ]
+                ).HTML::tag(
+                    'span', 
+                    'user-'.$user->state,//'', 
+                    [
+                        'class' => ['user-state', 'user-'.$user->state]
+                    ]
                 );
             }
             return $result;
