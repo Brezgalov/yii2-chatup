@@ -10,7 +10,6 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegisterForm;
 use app\models\User;
-use app\models\Client;
 use yii\base\UserException;
 use yii\helpers\Html;
 
@@ -55,13 +54,6 @@ class UserController extends Controller
                     ],
                 ],
             ],
-            // 'verbs' => [
-            //     'class' => VerbFilter::className(),
-            //     'actions' => [
-            //         'chatup' => ['post'],
-            //         'new-message' => ['post'],
-            //     ],
-            // ],
         ];
     }
 
@@ -143,11 +135,12 @@ class UserController extends Controller
 
     public static function getAvailableContactsList($id) {
         if ($id) {
-            $users = Client::find()
-                ->where(['not', 'id='.$id])
+            $users = User::find()
+                // ->where(['not', 'id='.$id])
                 ->all();
             $result = [];
             foreach ($users as $user) {
+                $userState = $user->getState();
                 $result[$user->id] = Html::a(
                     $user->username, 
                     [
@@ -156,9 +149,9 @@ class UserController extends Controller
                     ]
                 ).HTML::tag(
                     'span', 
-                    'user-'.$user->state,//'', 
+                    '', 
                     [
-                        'class' => ['user-state', 'user-'.$user->state]
+                        'class' => ['user-state', 'user-'.$userState]
                     ]
                 );
             }

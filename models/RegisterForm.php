@@ -43,14 +43,15 @@ class RegisterForm extends Model {
             if ($userExists) {
                 throw new UserException("Error: this username has already been taken");
             }
-            $result = User::create(
-                $this->email,
-                $this->username,
-                password_hash(
-                    $this->password, 
-                    PASSWORD_BCRYPT
-                )
+            $user = new User();
+            $user->email = $this->email;
+            $user->username = $this->username;
+            $user->password = password_hash(
+                $this->password, 
+                PASSWORD_BCRYPT
             );
+            $user->save();
+            Yii::$app->user->login($user, 0);
             return true;
         } else {
             throw new UserException("Error: Passwords mismatch");

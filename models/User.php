@@ -2,28 +2,31 @@
 
 namespace app\models;
 
-use app\models\UserChats;
-use \yii\db\Query;
 use Yii;
-use yii\helpers\Html;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+/**
+ * This is the model class for table "users".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $email
+ * @property string $password
+ * @property string $auth_key
+ * @property string $access_token
+ *
+ * @property UserChats[] $userChats
+ * @property UserChats[] $userChats0
+ * @property UserMessages[] $userMessages
+ * @property UserMessages[] $userMessages0
+ */
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $email;
-    public $password;
-    public $state;
-    public $status;
-    public $auth_key;
-    public $access_token;
-
-    public static function findBy($key, $value) {
-        return (new Query())
-            ->select(['*'])
-            ->from('users')
-            ->where([$key => $value])
-            ->all();
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'users';
     }
 
     /**
@@ -31,9 +34,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        $found = self::findBy('id', $id);
-        $user = array_shift($found);
-        return (!empty($user))? new static($user) : null;
+        return static::findOne($id);
     }
 
     /**
@@ -41,9 +42,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $found = self::findBy('access_token', $token);
-        $user = array_shift($found);
-        return (!empty($user))? new static($user) : null;
+        return static::findOne(['access_token' => $token]);
     }
 
     /**
@@ -54,9 +53,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        $found = self::findBy('username', $username);
-        $user = array_shift($found);
-        return (!empty($user))? new static($user) : null;
+        return static::findOne(['username' => $username]);
     }
 
     /**
@@ -67,44 +64,52 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByEmail($email)
     {
-        $found = self::findBy('email', $email);
-        $user = array_shift($found);
-        return (!empty($user))? new static($user) : null;
+        return static::findOne(['email' => $email]);
     }
 
     /**
-     * Returns users list
+     * @inheritdoc
      */
-    public static function all() 
+    public function rules()
     {
-        return (new Query())
-            ->select(['*'])
-            ->from('users')
-            ->all();
-    }
-
-    /**
-     * Creates new user
-     */
-    public static function create($email, $username, $password, $args = []) 
-    {
-        $command = Yii::$app->db->createCommand();
-        $args = array_merge(
-            $args, 
+        return [
+            [['username', 'email', 'password'], 'required'],
             [
-                'email' => $email,
-                'username' => $username,
-                'password' => $password
-            ]
-        );
-        $res = $command->insert('users', $args)->execute();
-        if ($res) {
-            $user = User::findByEmail($email);
-            Yii::$app->user->login($user, 0);
-        }
-        return $res;
+                [
+                    'username', 
+                    'email', 
+                    'password', 
+                    'auth_key', 
+                    'access_token',
+                    'status',
+                ], 
+                'string', 
+                'max' => 255
+            ],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+        ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'email' => 'Email',
+            'status' => 'User status',
+            'password' => 'Password',
+            'auth_key' => 'Auth Key',
+            'access_token' => 'Access Token',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getChats() {
         return UserChats::find()
             ->with('chat')
@@ -114,11 +119,19 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @return \yii\db\ActiveQuery
      */
-    public function getId()
+    public function getUserChats()
     {
-        return $this->id;
+        return $this->hasMany(UserChats::className(), ['chat_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserMessages()
+    {
+        return $this->hasMany(UserMessages::className(), ['chat_id' => 'id']);
     }
 
     /**
@@ -126,7 +139,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
@@ -134,7 +147,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**
@@ -149,5 +162,29 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             $password,
             $this->password
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getState() {
+        $session = (new \yii\db\Query())
+            ->select(['*'])
+            ->from('session')
+            ->where(['user_id' => $this->id])
+            ->one();
+        if (
+            !empty($session) && 
+            $session['expire'] - time() > 0
+        ) {
+            return 'online';
+        } else {
+            return 'offline';    
+        }
     }
 }

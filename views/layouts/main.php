@@ -108,7 +108,7 @@ $newChatFrom = new CreateChatForm();
 						        						'id' => $userChat->chat->id
 					        						], 
 						        					['class' => 'brand']
-						    					) 
+						    					)
 										    );
 										}
 									]
@@ -118,17 +118,27 @@ $newChatFrom = new CreateChatForm();
     				<?php else: ?>
 	    				<div class="users-list">
 		    				<?= Html::ul(
-			    					User::all(), 
+			    					User::find()->all(), 
 			    					[
 			    						'class' => 'chatup-users',
-			    						'item' => function($data, $index) {
+			    						'item' => function($user, $index) {
 										    return Html::tag(
 										        'li',
-										        $data['username']
+										        $user->username.
+										        HTML::tag(
+								                    'span', 
+								                    '', 
+								                    [
+								                        'class' => [
+								                        	'user-state', 
+								                        	'user-'.$user->getState(),
+							                        	]
+								                    ]
+								                )
 										    );
 										}
 									]
-								) 
+								)
 							?>
 						</div>
     				<?php endif; ?>

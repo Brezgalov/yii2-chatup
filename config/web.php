@@ -6,7 +6,9 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -49,6 +51,17 @@ $config = [
             'showScriptName' => false,
             'rules' => [
             ],
+        ],
+        'session' => [
+            'class' => 'yii\web\DbSession',
+            'writeCallback' => function ($session) {
+                $id = Yii::$app->user->id;
+                return [
+                   'user_id' => ($id)?: 0,
+                   'addr' => $_SERVER['REMOTE_ADDR'],
+                   'last_write' => time(),
+                ];               
+            },
         ],
     ],
     'params' => $params,
