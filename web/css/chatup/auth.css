@@ -1,0 +1,36 @@
+.workspace .landing-wrapper .login {
+	height: 40vh;
+    padding-top: 25vh;
+}
+.workspace .landing-wrapper .register {
+	height: 50vh;
+	padding-top: 22vh;
+}
+.workspace .landing-wrapper .register h2,
+.workspace .landing-wrapper .login h2 {
+	font-size: 5vh;
+	line-height: 5vh;
+	margin: 0;
+	margin-bottom: 2vh;
+	color: rgb(72, 27, 127);
+}
+.workspace .landing-wrapper .register label,
+.workspace .landing-wrapper .login label {
+	font-size: 2vh;
+}
+.workspace .landing-wrapper .login .field-loginform-rememberme label {
+	margin-right: 4px;
+}
+.workspace .landing-wrapper .login .signup-btn {
+	float: right;
+}
+.workspace .landing-wrapper .register .back-btn,
+.workspace .landing-wrapper .register .signup-btn,
+.workspace .landing-wrapper .login .signup-btn,
+.workspace .landing-wrapper .login .signin-btn {
+	font-size: 2vh;
+}
+.workspace .landing-wrapper .register .back-btn,
+.workspace .landing-wrapper .register .signup-btn {
+	margin: 0 4px;
+}

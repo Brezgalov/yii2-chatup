@@ -1,1 +1,16 @@
-@import url('layout.css')
+@import url('layout.css');
+@import url('auth.css');
+
+.main .landing-wrapper {
+	height: 100vh;
+}
+.main .landing-wrapper .hub {
+	padding: 30vh 0 50vh;
+	text-align: center;
+}
+.main .landing-wrapper .hub h2 {
+	margin: 0;
+	font-size: 20vh;
+	line-height: 20vh;
+	color: rgba(72, 27, 127, 0.3);
+}

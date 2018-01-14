@@ -18,6 +18,9 @@ body > .container {
     vertical-align: middle;
     display: inline-block;
 }
+.input-error p {
+	margin: 0;
+}
 span.user-state {
 	width: 10px;
 	height: 10px;
@@ -29,6 +32,12 @@ span.user-state {
 }
 span.user-state.user-offline {
 	background-color: red;
+}
+span.user-state.user-online {
+	background-color: green;
+}
+.main .workspace {
+	border-right: 2px solid black
 }
 .main .sidebar {
 	border-left: 2px solid black;
@@ -43,8 +52,7 @@ span.user-state.user-offline {
 .main .sidebar input.sidebar-text-input {
 	height: 3vh;
     font-size: 2vh;
-    padding-top: 0.5vh;
-    padding-bottom: 0.5vh;
+    padding: 0.5vh;
     vertical-align: top;
     border: 1px solid #ccc !important;
 }
@@ -71,9 +79,11 @@ span.user-state.user-offline {
     border-radius: 4px;
     overflow-y: scroll;
     overflow-x: hidden;
+    list-style: none;
 }
 .main .sidebar .sidebar-input-area .line,
-.main .sidebar .sidebar-input-area .checkbox {
+.main .sidebar .sidebar-input-area .checkbox,
+.main .sidebar .error-summary ul li a {
 	margin: 0;
 	height: 3vh;
 	line-height: 2vh;
@@ -117,9 +127,14 @@ span.user-state.user-offline {
 	width: 90%;
 	height: 3vh;
 	display: inline-block;
+	vertical-align: top;
+}
+.main .sidebar .new-chat {
+	border-bottom: none;
 }
 .main .sidebar .new-chat h2,
-.main .sidebar .chats-list h2 {
+.main .sidebar .chats-list h2,
+.main .sidebar .users-list h2 {
 	font-size: 2vh;
 	line-height: 2vh;
 	margin: 0;
@@ -127,8 +142,8 @@ span.user-state.user-offline {
 	padding-bottom: 1vh;
 }
 .main .sidebar .new-chat #new-chat-form #createchatform-users {
-    height: 25vh;
-    max-height: 28vh;
+    height: 18vh;
+    max-height: 18vh;
     border-bottom: none !important;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -147,15 +162,17 @@ span.user-state.user-offline {
 	border-top-right-radius: 0;
 }
 .main .sidebar .chats-list {
-    height: 48vh;
+    height: 47vh;
+    position: absolute;
+	width: 100%;
+	bottom: 6vh;
 }
 .main .sidebar .chats-list ul {
 	margin: 0;
-	list-style: none;
     width: 100%;
     padding-top: 1vh;
     padding-bottom: 1vh;
-    height: 41vh;
+    height: 40vh;
 }
 .main .sidebar .chats-list ul a {
 	font-size: 2vh;
@@ -164,6 +181,34 @@ span.user-state.user-offline {
 .main .sidebar .developer {
 	text-align: center;
 	font-size: 2vh;
-	padding-top: 1.5vh;
+	padding: 1.5vh 0;
 	color: white;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	width: 100%;
+}
+.main .sidebar .users-list {
+	padding-top: 1vh;
+}
+.main .sidebar .users-list .chatup-users {
+	height: 84vh;
+}
+.main .sidebar .error-summary {
+	height: 7vh;
+	max-height: 7vh;
+	overflow-y: scroll; 
+	padding: 1vh;
+	margin: 0;
+	margin-top: 1vh;
+	border-radius: 4px;
+}
+.main .sidebar .error-summary ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.main .sidebar .error-summary p {
+	display: none;
 }
