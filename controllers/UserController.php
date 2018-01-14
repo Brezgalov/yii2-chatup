@@ -97,7 +97,7 @@ class UserController extends Controller
                 $result[$user->id] = Html::a(
                     $user->username, 
                     [
-                        'site/profile', 
+                        'user/profile', 
                         'id' => $user->id
                     ]
                 ).HTML::tag(

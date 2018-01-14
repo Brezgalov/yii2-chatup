@@ -145,6 +145,7 @@ $statusForm = new SetStatusForm();
 					        			'name' => 'chatup-button',
 					    			]	
 								); 	
+								echo $form->errorSummary($newChatFrom);
 								ActiveForm::end(); 
 							 ?>
 	    				</div>
@@ -185,10 +186,14 @@ $statusForm = new SetStatusForm();
 	    				</div>
     				<?php else: ?>
 	    				<div class="users-list">
+	    					<h2>Users</h2>
 		    				<?= Html::ul(
 			    					User::find()->all(), 
 			    					[
-			    						'class' => 'chatup-users',
+			    						'class' => [
+			    							'chatup-users',
+			    							'sidebar-input-area',
+			    						],
 			    						'item' => function($user, $index) {
 										    return Html::tag(
 										        'li',
@@ -202,7 +207,10 @@ $statusForm = new SetStatusForm();
 								                        	'user-'.$user->getState(),
 							                        	]
 								                    ]
-								                )
+								                ),
+								                [
+								                	'class' => ['line']
+							                	]
 										    );
 										}
 									]

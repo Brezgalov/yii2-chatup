@@ -70,7 +70,6 @@ class UserChats extends \yii\db\ActiveRecord
     {
         return Messages::find()
             ->where(['chat_id' => $this->chat_id])
-            ->andFilterWhere(['user_id' => $userId])
             ->andFilterWhere(['>', 'date', $this->last_read])
             ->count();
     }

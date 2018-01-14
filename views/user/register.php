@@ -26,14 +26,21 @@
         			<?= 
 			            Html::a(
 			                'Back', 
-			                Yii::$app->request->referrer
+			                Yii::$app->request->referrer,
+			                [
+			                	'class' => ['back-btn']
+			                ]
 			            ); 
 			        ?>
         			<?= 
 			        	Html::submitButton(
 			        		'SignUp', 
 			        		[
-			        			'class' => 'btn btn-danger', 
+			        			'class' => [
+			        				'btn', 
+			        				'btn-danger',
+			        				'signup-btn'
+			        			], 
 			        			'name' => 'register-button'
 			    			]	
 						) 	

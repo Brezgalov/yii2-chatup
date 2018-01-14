@@ -16,7 +16,7 @@
 	    ?>    
 	        <div class="container-fluid">
 	        	<div class="text-center">
-	        		<h2>Sign in ChatUp!</h2>
+	        		<h2>Log in ChatUp!</h2>
 	        	</div>
 	        	<?= $form->field($model, 'email')->textInput() ?>
 	        	<?= $form->field($model, 'password')->passwordInput() ?>
@@ -31,7 +31,9 @@
 	        				Html::a(
 	        					'SignUp', 
 	        					['user/register'], 
-	        					['class' => 'btn btn-danger']
+	        					[
+	        						'class' => ['btn', 'btn-danger', 'signup-btn']
+        						]
 	    					) 
 	    				?>
 	        		</div>
@@ -40,7 +42,7 @@
 				        	Html::submitButton(
 				        		'LogIn', 
 				        		[
-				        			'class' => 'btn btn-primary', 
+				        			'class' => ['btn', 'btn-primary', 'signin-btn'], 
 				        			'name' => 'login-button'
 				    			]	
 							) 	
