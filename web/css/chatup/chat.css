@@ -1,0 +1,105 @@
+.main .workspace .landing-wrapper .chat .chat-header .title-wrapper {
+	text-align: center;
+	border-bottom: 1px solid black;
+}
+.main .workspace .landing-wrapper .chat .chat-header .title-wrapper h2 {
+	font-size: 3vh;
+	line-height: 3vh;
+	padding: 1vh 0;
+	margin: 0;
+	color: rgb(72, 27, 127);
+}
+.main .workspace .landing-wrapper .chat .chat-header .users h3 {
+	margin: 1vh 0;
+	font-size: 2vh;
+	display: inline-block;
+	width:9%;
+	vertical-align: top;
+}
+.main .workspace .landing-wrapper .chat .chat-header ul.chat-users {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	display: inline-block;
+	width:90%;
+	vertical-align: top;
+}
+.main .workspace .landing-wrapper .chat .chat-header .chat-users li {
+	display: inline-block;
+	padding: 0.5vh;
+	font-size: 1.5vh;
+	margin: 3px 4px 2px 0;
+	border-radius: 10px;
+	border: 1px solid black;
+	background-color: rgb(72, 27, 127);
+	color: white;
+}
+.main .workspace .landing-wrapper .chat .messages {
+	margin-top: 1vh;
+	border: 1px solid black;
+	padding: 0px 0.5vh;
+	border-radius: 4px;
+	height: 70vh;
+	overflow-y: scroll;
+	overflow-x: hidden; 
+}
+.main .workspace .landing-wrapper .chat .messages ul.chat-messages,
+.main .workspace .landing-wrapper .chat .unread ul.chat-messages-unread {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.main .workspace .landing-wrapper .chat .message .prefix {
+	padding: 0.5vh 0;
+}
+.main .workspace .landing-wrapper .chat .message .prefix .author,
+.main .workspace .landing-wrapper .chat .message .prefix .time
+ {
+	display: inline-block;
+	font-size: 2vh;
+	color: rgba(72, 27, 127, 0.8);
+}
+.main .workspace .landing-wrapper .chat .message .prefix .time {
+	float: right;
+}
+.main .workspace .landing-wrapper .chat .message .text {
+	font-size: 2vh;
+	padding: 0 0 0 2vh;
+}
+.main .workspace .landing-wrapper .chat .messages .unread .separator {
+	background-color: red;
+	border: 1px solid darkred;
+	border-left: none;
+	border-right: none;
+	padding: 0.5vh 0;
+	margin: 0.5vh -0.5vh;
+	font-size: 2vh;
+	text-align: center;
+	color:white;
+}
+.main .workspace .landing-wrapper .chat .messages .unread .separator h4,
+.main .workspace .landing-wrapper .chat .new-message .form-group {
+	margin: 0;
+}
+.main .workspace .landing-wrapper .chat .new-message .field-sendmessageform-text {
+	width: 90%;
+	display: inline-block;
+	vertical-align: top;
+}
+.main .workspace .landing-wrapper .chat .new-message .send-message-button {
+	width: 10%;
+	height: 10vh;
+	display: inline-block;
+	vertical-align: top;
+}
+.main .workspace .landing-wrapper .chat .new-message label {
+	margin: 0 0 0.5vh 0;
+	font-size: 2vh;
+}
+.main .workspace .landing-wrapper .chat .new-message .field-sendmessageform-text textarea {
+	height: 10vh;
+	resize: none;
+}

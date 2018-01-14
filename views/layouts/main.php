@@ -38,7 +38,9 @@ $statusForm = new SetStatusForm();
 	        				Html::a(
 	        					'<h1>Chat Up</h1>', 
 	        					['/'], 
-	        					['class' => 'brand']
+	        					[
+	        						'class' => ['brand']
+        						]
 	    					) 
 	    				?>
     				</div>
@@ -227,7 +229,6 @@ $statusForm = new SetStatusForm();
 				</div>
 			</div>
 		</div>
-
 		<?php $this->endBody() ?>
 	</body>
 </html>

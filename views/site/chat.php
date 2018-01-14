@@ -1,17 +1,34 @@
 <?php 
 	use yii\helpers\Html;
 	use yii\bootstrap\ActiveForm;
+
+	$this->registerJsFile(
+        '@web/js/convert-UNIX-timestamp.js',
+        [
+            'depends' => [\yii\web\JqueryAsset::className()]
+        ]
+    );
+    $this->registerJsFile(
+        '@web/js/chat.js',
+        [
+            'depends' => [\yii\web\JqueryAsset::className()]
+        ]
+    );
+
+	$this->title = 'Chat Up! '.$name;
 ?>
 <div class="landing-wrapper">
 	<div class="chat">
 		<div class="chat-header">
-			<h2><?= $name ?></h2>
-			<div class="users">
+			<div class="title-wrapper">
+				<h2><?= $name ?></h2>
+			</div>
+			<div class="users noselect">
 				<h3>Users:</h3>
 				<?= Html::ul(
 						$users, 
 						[
-							'class' => 'chat-users',
+							'class' => ['chat-users'],
 							'item' => function($user, $index) {
 							    return Html::tag(
 							        'li',
@@ -24,11 +41,12 @@
 			</div>
 		</div>
 		<div class="messages">
-			<h3>Messages:</h3>
 			<?= Html::ul(
 					$messages, 
 					[
-						'class' => 'chat-users',
+						'class' => [
+							'chat-messages'
+						],
 						'item' => function($message, $index) {
 						    return Html::tag(
 						        'li',
@@ -40,13 +58,13 @@
 			?>
 			<?php if (!empty($unread)): ?>
 				<div class="unread">
-					<div class="text-center">
+					<div class="separator">
 						<h4>Unread Messages:</h4>
 					</div>
 					<?= Html::ul(
 							$unread, 
 							[
-								'class' => 'chat-users',
+								'class' => ['chat-messages-unread'],
 								'item' => function($message, $index) {
 								    return Html::tag(
 								        'li',
@@ -72,8 +90,15 @@
 				echo $form->field($model, 'user_id')
 					->hiddenInput()
 					->label(false);
-				echo $form->field($model, 'text')->textarea();
-				echo HTML::submitButton('Send', ['class' => 'send-message-button']);
+				echo $form->field($model, 'text')
+					->textarea()
+					->label(false);
+				echo HTML::submitButton(
+					'Send', 
+					[
+						'class' => ['send-message-button']
+					]
+				);
 				ActiveForm::end();
 			?>
 		</div>

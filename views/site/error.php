@@ -15,11 +15,16 @@ $this->title = $name;
         <div class="alert alert-danger">
             <?= nl2br(Html::encode($message)) ?>
         </div>
-        <?= 
-            Html::a(
-                "OK! I promise to go back and play nice.", 
-                Yii::$app->request->referrer
-            ); 
-        ?>
+        <div class="text-center">
+            <?= 
+                Html::a(
+                    "OK! I promise to go back and play nice.", 
+                    Yii::$app->request->referrer,
+                    [
+                        'class' => ['back-btn'],
+                    ]
+                ); 
+            ?>
+        </div>
     </div>
 </div>

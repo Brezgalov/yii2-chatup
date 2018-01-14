@@ -1,0 +1,30 @@
+.main .workspace .profile .form-group {
+	margin: 0;
+}
+.main .workspace .profile .head h2 {
+	margin: 0;
+	padding: 1vh 0;
+	font-size: 3vh;
+	border-bottom: 1px solid black;
+	display: block;
+	line-height: 3vh;
+	text-align: center;
+	color: rgb(72, 27, 127);
+}
+.main .workspace .profile #user-profile-form h3, 
+.main .workspace .profile .head h4 {
+	margin: 0;
+	padding: 1vh 0;
+	font-size: 2vh;
+	line-height: 2vh;
+}
+.main .workspace .profile .table tr {
+	height: 2vh;
+}
+.main .workspace .profile .table tr td {
+	line-height: 2vh;
+	font-size: 2vh;
+}
+.main .workspace .profile #user-profile-form h3 {
+
+}

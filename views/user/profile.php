@@ -33,7 +33,7 @@
 							'user_id'
 						)->hiddenInput([
 							'value' => $user->id,
-						])->label(false);
+						])->label(false)->error(false);
 					?>
 						<div class="row">
 							<div class="col-md-6">
@@ -83,7 +83,7 @@
 						        	Html::submitButton(
 						        		'Save', 
 						        		[
-						        			'class' => 'btn btn-primary', 
+						        			'class' => ['btn', 'btn-primary'], 
 						        			'name' => 'login-button'
 						    			]	
 									) 	

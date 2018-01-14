@@ -1,0 +1,18 @@
+.main .workspace .landing-wrapper .error h2{
+	margin: 0;
+	padding: 2vh 0;
+	text-align: center;
+	line-height: 5vh;
+	font-size: 5vh;
+	color: rgba(72, 27, 127, 0.8);
+}
+.main .workspace .landing-wrapper .error .alert.alert-danger {
+	border-color: darkred;
+	border-width: 3px;
+	background-color: red;
+	font-size: 3vh;
+	color: white;
+}
+.main .workspace .landing-wrapper .error .back-btn {
+	font-size: 2vh;
+}
